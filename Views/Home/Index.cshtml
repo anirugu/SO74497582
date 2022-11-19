@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<input type="text" placeholder="Username" id="username" />
+<button type="submit" onclick="sendResult()">Submit</button>
+
+<script type="text/javascript">
+    function sendResult() {
+        let username = document.getElementById('username').value;
+
+        try {
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "/Test/Test");
+            xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+            let xml = `<?xml version="1.0"?><query><Username>${username}</Username></query>`;
+            console.log(xml)
+            xmlhttp.send(xml);
+
+            let xmlResponse;
+            xmlhttp.onreadystatechange = async function () {
+                if (xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) {
+                    xmlResponse = await xmlhttp.responseXML;
+                    console.log(xmlResponse)
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+</script>
